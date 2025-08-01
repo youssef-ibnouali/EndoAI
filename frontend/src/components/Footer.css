@@ -1,0 +1,54 @@
+.footer {
+  background-color: #ffffff;
+  color: #333;
+  font-size: 0.9rem;
+  padding: 2vh 3vw;
+  border-top: 2px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 3vw;
+}
+
+.footer-contact, .footer-credits {
+  flex: 1;
+  min-width: 280px;
+}
+
+.footer-section {
+  margin-bottom: 1vh;
+}
+
+.partners img {
+  height: 50px;
+  margin-right: 30px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.5vh;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 8px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+}
+
+.contact-form button {
+  background-color: #ab3c3e;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background-color: #831a1c;
+}

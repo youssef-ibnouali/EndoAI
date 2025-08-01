@@ -1,0 +1,34 @@
+# Ignore le dossier VS Code
+.vscode/
+*.zip
+
+# Ignore les fichiers de cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.DS_Store
+
+# Ignore l'environnement virtuel
+env/
+env/
+*.egg-info/
+
+# Ignore Data
+data/
+
+#
+checkpoints/
+
+results/
+uploads/
+*.pdf
+
+patient_data/
+
+# Node / React frontend
+node_modules/
+frontend/node_modules/
+frontend/dist
+frontend/.vite
+*.log

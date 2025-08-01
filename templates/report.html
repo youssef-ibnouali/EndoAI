@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>EndoAI - Report</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e6f6ff;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3vh;
+    }
+
+    .top-bar img {
+      width: clamp(40px, 6vw, 90px);
+      margin-top: 3.5vh;
+      margin-left: 3vw;
+    }
+
+    .top-bar .name {
+      font-weight: bold;
+      color: #4b4b4b;
+      font-size: clamp(1rem, 1.5vw, 1.6rem);
+      margin-right: 3vw;
+    }
+
+    .logo {
+      width: clamp(100px, 20vw, 350px);
+      margin-bottom: 3vh;
+    }
+    
+
+    .report-label {
+      font-size: clamp(1rem, 1.8vw, 1.5rem);
+      font-weight: bold;
+      margin-bottom: 2vh;
+    }
+
+    .doc-icon {
+      width: clamp(40px, 6vw, 80px);
+      margin-bottom: 4vh;
+    }
+
+    .return-icon {
+      position: fixed;
+      bottom: 5vh;
+      left: 4vw;
+      width: clamp(40px, 5vw, 90px);
+      cursor: pointer;
+    }
+
+    .centered-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .top-bar {
+        flex-direction: column;
+        gap: 1vh;
+        align-items: center;
+      }
+
+      .top-bar .name {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <a href="{{ url_for('splash') }}">
+      <img src="{{ url_for('static', filename='home_icon.png') }}">
+    </a>
+    <div class="name">{{ name }}</div>
+  </div>
+
+  <div class="centered-content">
+
+    <!-- LOGO -->
+    <img src="{{ url_for('static', filename='logo1.png') }}" class="logo">
+
+    <!-- TEXTE -->
+    <p class="report-label">Check the medical report :</p>
+    <a href="{{ url_for('generate_report', name=name) }}?diagnosis={{ dominant_class }}">
+      <img src="{{ url_for('static', filename='doc_icon.png') }}" class="doc-icon" title="Download PDF Report">
+    </a>
+
+    <!-- RETOUR -->
+    <a href="{{ url_for('process_image', name=name) }}">
+      <img src="{{ url_for('static', filename='return_icon.png') }}" class="return-icon">
+    </a>
+  </div>
+</body>
+</html>

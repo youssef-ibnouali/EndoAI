@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EndoAI – Analysis</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e6f6ff;
+        }
+
+        .background {
+            min-height: 100vh;
+            padding: 2vh 3vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 3vh;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        .top-bar img.logo {
+            width: clamp(100px, 25vw, 400px);
+        }
+
+        
+
+        .top-bar .name {
+            font-weight: bold;
+            color: #4b4b4b;
+            font-size: clamp(1rem, 1.5vw, 1.6rem);
+        }
+
+        /* Upload form */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 18vh;
+            margin-left: 1vw;
+        }
+
+        .custom-upload,
+        .process-btn {
+            width: clamp(150px, 18vw, 210px);
+            padding: 12px 18px;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-upload {
+            border-radius: 18px;
+            background-color: rgb(66, 65, 65);
+            font-size: clamp(1rem, 1.2vw, 1.3rem);
+        }
+
+        .process-btn {
+            margin-top: 4vh;
+            height: 50px;
+            border-radius: 22px;
+            background-color: #ab3c3e;
+            font-size: clamp(1rem, 1.2vw, 1.3rem);
+        }
+
+        .custom-upload:hover,
+        .process-btn:hover {
+            background-color: #321112;
+        }
+
+        #file-name {
+            color: #333;
+            font-style: italic;
+            margin-top: 1vh;
+            margin-left: 0.5vw;
+        }
+
+        /* Results */
+        .result-box {
+            margin-top: 4vh;
+            text-align: center;
+        }
+
+        .output-image {
+            width: clamp(100px, 50vw, 1200px);
+            height: auto;
+            display: block;
+            margin-inline: auto;
+            border-radius: 8px;
+        }
+
+        .score-bar {
+            margin-top: 2vh;
+            padding: 12px;
+            background: white;
+            font-weight: bold;
+            font-size: clamp(0.8rem, 1.2vw, 1.3rem);
+            border-radius: 6px;
+            margin-inline: auto;
+            width: clamp(190px, 50vw, 1000px);
+        }
+
+        .content-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 2vw;
+            margin-top: 0vh;
+            flex-wrap: wrap; /* utile pour mobile */
+        }
+
+        form {
+            flex: 1;
+            max-width: 12vw;
+        }
+
+        .result-box {
+            flex: 2;
+            text-align:center;
+        }
+
+        /* Icons */
+        .floating-icon {
+            position: fixed;
+            width: clamp(40px, 5vw, 90px);
+            cursor: pointer;
+        }
+
+        .next-icon {
+            top: 45%;
+            right: 5vw;
+        }
+
+        .return-icon {
+            bottom: 6vh;
+            left: 4vw;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 1vh;
+            }
+
+            form {
+                align-items: center;
+                text-align: center;
+            }
+
+            .score-bar {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <a href="{{ url_for('splash') }}">
+                <img src="{{ url_for('static', filename='home_icon.png') }}" class="floating-icon" style="position: static; width: clamp(40px, 6vw, 90px);">
+            </a>
+            <div>
+                <img src="{{ url_for('static', filename='logo2.png') }}" class="logo">
+            </div>
+            <div class="name">{{ name }}</div>
+        </div>
+
+        <div class="content-section">
+            <!-- FORMULAIRE -->
+            <form method="POST" enctype="multipart/form-data">
+                <label class="custom-upload">
+                    upload image
+                    <input type="file" name="image" accept="image/*" required hidden onchange="showFileName(this)">
+                </label>
+                <span id="file-name">No file selected</span>
+                <button class="process-btn" type="submit">Process</button>
+            </form>
+
+            <!-- AFFICHAGE DU RÉSULTAT -->
+            {% if scores %}
+            <div class="result-box">
+                <img src="{{ result_img }}" class="output-image">
+                <div class="score-bar">
+                    <span style="color: #ae9714;">IM: {{ "%.2f"|format(scores.IM) }}%</span> &nbsp;&nbsp;
+                    | <span style="color: #009cc7;">AG: {{ "%.2f"|format(scores.AG) }}%</span> &nbsp;&nbsp;
+                    | <span style="color: #018f48;">Normal: {{ "%.2f"|format(scores.Normal) }}%</span> &nbsp;&nbsp;
+                    | <span style="color: #c20000;">Dysplasia: {{ "%.2f"|format(scores.Dysplasia) }}%</span> &nbsp;&nbsp;
+                    | <span style="color: #890089;">Cancer: {{ "%.2f"|format(scores.Cancer) }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOUTON CONTINUER -->
+        <a href="{{ url_for('report', name=name) }}?diagnosis={{ dominant_class }}">
+            <img src="{{ url_for('static', filename='next_red_icon.png') }}" class="floating-icon next-icon" style=" width: clamp(40px, 7vw, 120px);">
+        </a>
+        {% endif %}
+
+        <!-- BOUTON RETOUR -->
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='return_icon.png') }}" class="floating-icon return-icon">
+        </a>
+
+    </div>
+
+    <script>
+        function showFileName(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById("file-name").textContent = file.name;
+            }
+        }
+    </script>
+
+</body>
+</html>
