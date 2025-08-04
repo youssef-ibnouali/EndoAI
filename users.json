@@ -1,0 +1,19 @@
+{
+"users": [
+    {
+        "organization": "Military Technical Academy 'Ferdinand I' of Bucharest",
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "organization": "Central Military Universitary Emergency Hospital 'Carol Davila' of Bucharest",
+        "username": "admin",
+        "password": "admin"
+    },
+        {
+        "organization": "Other",
+        "username": "admin",
+        "password": "admin"
+        }
+    ]
+}

@@ -7,6 +7,7 @@ from fpdf import FPDF
 import locale
 from datetime import date
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -170,6 +171,35 @@ def get_interpreted_diagnosis(scores):
         return "Normal"
     else:
         return "Uncertain"
+    
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    organization = data.get('organization')
+    username = data.get('username')
+    password = data.get('password')
+
+    with open('users.json', 'r') as f:
+        users = json.load(f)["users"]  # <<== FIXED
+
+    for user in users:
+        if (user['organization'] == organization and
+            user['username'] == username and
+            user['password'] == password):
+            return jsonify({"success": True})
+
+    return jsonify({"success": False, "message": "Invalid credentials"}), 401
+
+@app.route('/organizations', methods=['GET'])
+def get_organizations():
+    try:
+        with open('users.json', 'r') as f:
+            data = json.load(f)
+        users = data.get("users", [])
+        organizations = sorted(set(user.get("organization") for user in users if "organization" in user))
+        return jsonify(organizations)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':

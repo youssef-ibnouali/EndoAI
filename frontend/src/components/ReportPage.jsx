@@ -6,6 +6,7 @@ import homeIcon from '../assets/home_icon.png';
 import docIcon from '../assets/doc_icon.png';
 import returnIcon from '../assets/return_icon.png';
 import Footer from "./Footer";
+import Header from './Header';
 
 const ReportPage = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const ReportPage = () => {
 
   return (
     <>
+    <Header />
     <div style={{
       backgroundColor: '#e6f6ff',
       fontFamily: 'Arial, sans-serif',
@@ -29,24 +31,6 @@ const ReportPage = () => {
       flexDirection: 'column',
       justifyContent: 'space-between'
     }}>
-      {/* Top Bar */}
-      <div className="top-bar" style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '3vh'
-      }}>
-        <a href="/">
-          <img src={homeIcon} alt="home" style={{ width: 'clamp(40px, 6vw, 90px)', marginTop: '3.5vh', marginLeft: '3vw' }} />
-        </a>
-        <div style={{
-          fontWeight: 'bold',
-          color: '#4b4b4b',
-          fontSize: 'clamp(1rem, 1.5vw, 1.6rem)',
-          marginRight: '3vw'
-        }}>{name}</div>
-      </div>
-
       {/* Centered Content */}
       <div className="centered-content" style={{
         flexGrow: 1,

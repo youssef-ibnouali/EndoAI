@@ -7,6 +7,7 @@ import homeIcon from '../assets/home_icon.png';
 import nextIcon from '../assets/next_red_icon.png';
 import returnIcon from '../assets/return_icon.png';
 import Footer from "./Footer";
+import Header from './Header';
 
 const UploadPage = () => {
   const location = useLocation();
@@ -47,6 +48,7 @@ const UploadPage = () => {
 
   return (
     <>
+    <Header />
     <div className="background" style={{ 
         backgroundColor: '#e6f6ff',
         height: '100vh',
@@ -55,18 +57,6 @@ const UploadPage = () => {
         display: 'flex',
         flexDirection: 'column'
         }}>
-      {/* TOP BAR */}
-      <div className="top-bar" style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
-      }}>
-        <a href="/">
-          <img src={homeIcon} alt="home" style={{ width: 'clamp(40px, 6vw, 90px)' }} />
-        </a>
-        <img src={logo} alt="logo" style={{ width: 'clamp(100px, 25vw, 400px)' }} />
-        <div style={{
-          fontWeight: 'bold', fontSize: 'clamp(1rem, 1.5vw, 1.6rem)', color: '#4b4b4b'
-        }}>{name}</div>
-      </div>
 
       {/* CONTENT SECTION */}
       <div className="content-section" style={{
@@ -94,11 +84,12 @@ const UploadPage = () => {
         {scores && (
           <div className="result-box" style={{ flex: 2, textAlign: 'center' }}>
             <img src={resultImgUrl} alt="result" style={{
-              width: 'clamp(50px, 50vw, 1200px)', borderRadius: 8, marginTop: '4vh'
+              width: 'clamp(50px, 50vw, 1200px)', borderRadius: 8, marginTop: '0vh'
             }} />
             <div className="score-bar" style={{
-              backgroundColor: 'white', padding: 12, borderRadius: 6,
-              marginTop: '2vh', fontWeight: 'bold', fontSize: 'clamp(0.8rem, 1.2vw, 1.3rem)'
+              /*backgroundColor: 'white',*/ 
+              padding: 12, borderRadius: 6,
+              marginTop: '2vh', fontWeight: 'bold', fontSize: 'clamp(0.8rem, 1.2vw, 1.3rem)', marginBottom: '1vh'
             }}>
               <span style={{ color: '#ae9714' }}> IM: {formatPercent(scores.IM)}</span> &nbsp;|
               <span style={{ color: '#009cc7' }}> AG: {formatPercent(scores.AG)}</span> &nbsp;|
@@ -110,7 +101,7 @@ const UploadPage = () => {
             {/* NEXT BUTTON */}
             <button onClick={() => navigate('/report', { state: { name, dominantClass } })}
               style={{
-                marginTop: '4vh',
+                marginTop: '1vh',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer'

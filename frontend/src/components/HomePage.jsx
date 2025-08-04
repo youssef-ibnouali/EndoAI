@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo1.png';
 import nextIcon from '../assets/next_black_icon.png';
 import Footer from "./Footer";
+import Header from './Header';
 
 
 const HomePage = () => {
@@ -18,6 +19,7 @@ const HomePage = () => {
 
   return (
     <>
+    <Header />
     <div style={{
       backgroundColor: '#e6f6ff',
       fontFamily: 'Arial, sans-serif',
