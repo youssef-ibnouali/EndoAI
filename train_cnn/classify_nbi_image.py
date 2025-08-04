@@ -151,4 +151,7 @@ def classify_nbi_image(image_path, model_name="efficientnetb4"):
     result_path = "results/result.png"
     cv2.imwrite(result_path, cv2.cvtColor(img_draw, cv2.COLOR_RGB2BGR))
 
-    return result_path, scores
+    avg_confidence = float(np.mean(confs)) * 100 
+
+    return result_path, scores, avg_confidence
+

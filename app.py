@@ -8,6 +8,8 @@ import locale
 from datetime import date
 from flask_cors import CORS
 import json
+from urllib.parse import unquote
+
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +19,57 @@ RESULT_FOLDER = 'results'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULT_FOLDER, exist_ok=True)
 
+# Load patient history data
+try:
+    with open('patient_data/patient_data.json', 'r') as f:
+        patient_data = json.load(f)
+except Exception as e:
+    patient_data = {}
+    print("Failed to load patient history:", e)
+
+
+def get_interpreted_diagnosis(scores):
+    n = scores.get("Normal", 0)
+    ag = scores.get("AG", 0)
+    im = scores.get("IM", 0)
+    dy = scores.get("Dysplasia", 0)
+    ca = scores.get("Cancer", 0)
+
+    if ca >= 45:
+        return "Cancer"
+    elif 25 < ca < 45:
+        return "Start of Cancer"
+    elif dy > 30:
+        return "Dysplasia"
+    elif im > 50:
+        return "IM"
+    elif ag + im > 80 and im > 30:
+        return "AG with early signs of IM"
+    elif ag > 50:
+        return "AG"
+    elif n + ag > 80 and ag > 30:
+        return "Start of AG"
+    elif n > 90:
+        return "Normal"
+    
+    # Fallback: use dominant score with priority on ties
+    score_dict = {
+        "Cancer": ca,
+        "Dysplasia": dy,
+        "IM": im,
+        "AG": ag,
+        "Normal": n
+    }
+
+    # Sort by value descending, then by priority
+    priority = {"Cancer": 0, "Dysplasia": 1, "IM": 2, "AG": 3, "Normal": 4}
+    sorted_items = sorted(score_dict.items(), key=lambda x: (-x[1], priority[x[0]]))
+    top_label, top_score = sorted_items[0]
+    if top_score > 0:
+        return top_label
+
+    # Final fallback
+    return "Uncertain"
 
 @app.route('/classify', methods=['POST'])
 def classify():
@@ -28,7 +81,7 @@ def classify():
     uploaded.save(img_path)
 
     # Appel du modèle
-    vis_path, scores = classify_nbi_image(img_path, model_name="efficientnetb4")
+    vis_path, scores, confidence = classify_nbi_image(img_path, model_name="efficientnetb4")
     scores = {k: float(scores[k]) for k in scores}
     diagnosis = get_interpreted_diagnosis(scores)
 
@@ -39,10 +92,18 @@ def classify():
         except Exception as e:
             print(f"Failed to remove {f}: {e}")
 
+    # Clean old PDF reports
+    for f in glob.glob(os.path.join(RESULT_FOLDER, '*.pdf')):
+        try:
+            os.remove(f)
+        except Exception as e:
+            print(f"Failed to remove {f}: {e}")
+
     return jsonify({
         'scores': scores,
         'diagnosis': diagnosis,
         'result_img': '/result.png',
+        'confidence': round(confidence, 2),
         'name': name
     })
 
@@ -54,8 +115,9 @@ def result_img():
 
 @app.route('/generate_report', methods=['GET'])
 def generate_report():
-    name = request.args.get('name', 'Unknown')
+    name = unquote(request.args.get('name', 'Unknown'))
     diagnosis = request.args.get('diagnosis', 'Uncertain')
+    print("Received name from frontend:", repr(name))
 
     explanations = {
         'Normal': (
@@ -115,6 +177,22 @@ def generate_report():
 
     message = explanations.get(diagnosis, "No specific explanation found.")
 
+    history_lines = []
+    print("Searching in patient_data names:")
+    for patient in patient_data:
+        print("  -", repr(patient.get('name', '')))
+
+    # Try to find matching patient in the list
+    for patient in patient_data:
+        if patient.get('name', '').strip().lower() == name.strip().lower():
+            print("MATCH FOUND:", patient['name'])
+            for record in patient.get('records', []):
+                line = f"- {record['date']}: {record['diagnosis']} → {record['comments']}"
+                history_lines.append(line)
+            break
+
+
+
     pdf = FPDF(format='A4')
     pdf.add_page()
 
@@ -139,38 +217,18 @@ def generate_report():
     pdf.ln(5)
     pdf.multi_cell(0, 10, f"Remarks:\n{message}")
     pdf.ln(8)
-    pdf.multi_cell(0, 10, "History of patient: unknown")
+
+    if history_lines:
+        pdf.multi_cell(0, 8, "History of patient:\n" + "\n".join(history_lines))
+    else:
+        pdf.multi_cell(0, 10, "History of patient: unknown")
+
 
     report_path = os.path.join(RESULT_FOLDER, f"{name}_report.pdf")
     pdf.output(report_path)
     return send_file(report_path, as_attachment=True)
 
 
-def get_interpreted_diagnosis(scores):
-    n = scores.get("Normal", 0)
-    ag = scores.get("AG", 0)
-    im = scores.get("IM", 0)
-    dy = scores.get("Dysplasia", 0)
-    ca = scores.get("Cancer", 0)
-
-    if ca >= 45:
-        return "Cancer"
-    elif 25 < ca < 45:
-        return "Start of Cancer"
-    elif dy > 30:
-        return "Dysplasia"
-    elif im > 50:
-        return "IM"
-    elif ag + im > 80 and im > 30:
-        return "AG with early signs of IM"
-    elif ag > 50:
-        return "AG"
-    elif n + ag > 80 and ag > 30:
-        return "Start of AG"
-    elif n > 90:
-        return "Normal"
-    else:
-        return "Uncertain"
     
 @app.route('/login', methods=['POST'])
 def login():

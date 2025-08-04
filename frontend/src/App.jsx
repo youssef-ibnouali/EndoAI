@@ -8,15 +8,23 @@ import ReportPage from "./components/ReportPage";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<SplashScreen />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/upload" element={<UploadPage />} />
-        <Route path="/report" element={<ReportPage />} />
-      </Routes>
-    </Router>
+    <div style={{ fontFamily: "'Potta One', cursive" }}>
+      {/* Load Potta One from Google Fonts */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Potta+One&display=swap"
+        rel="stylesheet"
+      />
+
+      <Router>
+        <Routes>
+          <Route path="/" element={<SplashScreen />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/upload" element={<UploadPage />} />
+          <Route path="/report" element={<ReportPage />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

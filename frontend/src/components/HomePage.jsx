@@ -22,13 +22,13 @@ const HomePage = () => {
     <Header />
     <div style={{
       backgroundColor: '#e6f6ff',
-      fontFamily: 'Arial, sans-serif',
       height: '100vh',
       width: '100vw',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2vh'
+      
     }}>
       <div style={{ textAlign: 'center', width: '100%', maxWidth: 600 }}>
         <img src={logo} alt="logo" style={{ width: 'clamp(100px, 25vw, 400px)' }} />

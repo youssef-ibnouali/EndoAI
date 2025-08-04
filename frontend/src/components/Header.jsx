@@ -16,7 +16,7 @@ const Header = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '1.5vh 3vw',
+      padding: '1.5vh 10vw',
       backgroundColor: 'white',
       borderBottom: '2px solid #ccc'
     }}>

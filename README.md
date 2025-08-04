@@ -7,12 +7,15 @@
 
 ## 🚀 Features
 
-- 🔬 Deep Learning classification of endoscopic images
-- 🧠 Patch-wise predictions with confidence levels
-- 🧾 Automated PDF report generation
-- 🖼️ Visual overlay of predictions on input images
-- 🌐 Clean frontend built with React + Vite
-- 👥 Login system with organization-based user control
+- 🔬 Deep Learning Classification: CNN and Transformer models trained on real annotated gastric endoscopy data.
+- 🧠 Patch-wise Analysis: Sliding-window patch selection with entropy, sharpness, and tissue masking.
+- 🧾 PDF Report Generation: Automatically summarizes class proportions and diagnosis results.
+- 🖼️ Visual Overlay: Class predictions visualized as bounding boxes with color-coded labels on original images.
+- 🌐 Full-Stack Application: Frontend in React (Vite), backend API in Flask, with clean user interface and upload flow.
+- 🧪 Model Benchmarking: Easily compare over 20+ architectures (EfficientNet, ResNet, ViT, Swin, etc.) with saved metrics and plots.
+- 👨‍⚕️ Medical Context Integration: MATLAB scripts support pre-selection of informative regions using entropy and morphological filtering.
+- 👥 Login System: Role-based access using organization-linked credentials (defined in users.json).
+- 🧰 Custom Training Pipeline: Includes support for patch augmentation, early stopping, class balancing, and confusion matrix generation.
 
 ---
 
@@ -94,17 +97,17 @@ EndoAI/
 ├── train_cnn/                    # Core model training and inference logic
 │   ├── model.py                  # CNN and transformer model definitions
 │   ├── train.py                  # Training loop with early stopping, metrics
-│   ├── classify_nbi_image.py    # Patch extraction and classification pipeline
-│   ├── predict_batch.py         # Python-based batch prediction (used via MATLAB)
-│   ├── try_models.py            # Batch test multiple models on your dataset
+│   ├── classify_nbi_image.py     # Patch extraction and classification pipeline
+│   ├── predict_batch.py          # Python-based batch prediction (used via MATLAB)
+│   ├── try_models.py             # Batch test multiple models on your dataset
 │   ├── data/
-│   │   ├── raw/                 # Raw patches before augmentation
-│   │   ├── processed/           # Train/val/test split directories
-│   │   └── augmentation.py      # Data augmentation logic
-│   └── utils/                   # Optional: metrics, plots, etc.
+│   │   ├── raw/                  # Raw patches before augmentation
+│   │   ├── processed/            # Train/val/test split directories
+│   │   └── augmentation.py       # Data augmentation logic
+│   └── utils/                    # Optional: metrics, plots, etc.
 ├── matlab/                       # MATLAB scripts for integration and visualization
-│   ├── classify_nbi_image_cnn.m # Calls Python classifier, draws detections
-│   ├── entropy_selection.m      # Patch selection using entropy and masks
+│   ├── classify_nbi_image_cnn.m  # Calls Python classifier, draws detections
+│   ├── entropy_selection.m       # Patch selection using entropy and masks
 │   └── ...
 ```
 
