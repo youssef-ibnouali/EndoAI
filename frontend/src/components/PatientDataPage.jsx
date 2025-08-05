@@ -196,7 +196,7 @@ return (
                 border: 'none',
                 position: 'absolute',
                 bottom: '2vh',
-                left: '5vw',
+                left: '4vw',
                 cursor: 'pointer',
                 transition: 'transform 0.2s'
             }}

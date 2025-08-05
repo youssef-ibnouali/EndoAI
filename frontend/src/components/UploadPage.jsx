@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import logo from '../assets/logo2.png';
-import homeIcon from '../assets/home_icon.png';
 import nextIcon from '../assets/next_red_icon.png';
 import returnIcon from '../assets/return_icon.png';
 import Footer from "./Footer";
 import Header from './Header';
+import Loading from '../assets/loading.gif';
 
 const UploadPage = () => {
   const location = useLocation();
@@ -21,6 +20,8 @@ const UploadPage = () => {
   const [diagnosis, setDiagnosis] = useState('');
   const [confidence, setConfidence] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -31,6 +32,8 @@ const UploadPage = () => {
     e.preventDefault();
     if (!image) return;
 
+    setLoading(true);
+    setScores(null);
     const formData = new FormData();
     formData.append('image', image);
     formData.append('name', name);
@@ -45,6 +48,8 @@ const UploadPage = () => {
 
     } catch (err) {
       console.error('Upload error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,7 +82,8 @@ const UploadPage = () => {
             maxWidth: '12vw',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginLeft: '2vw'
           }}
         >
           {/* Upload Button */}
@@ -144,12 +150,17 @@ const UploadPage = () => {
           </button>
         </form>
 
+        {loading && (
+          <div style={{ marginTop: '3vh', textAlign: 'center' }}>
+            <img src={Loading} alt="Loading..." style={{ width: '100px', marginLeft : '35vw', marginTop: '10vh' }} />
+          </div>
+        )}
 
         {/* RESULT DISPLAY */}
-        {scores && (
+        {!loading && scores && (
           <div className="result-box" style={{ flex: 2, textAlign: 'center' }}>
             <img src={resultImgUrl} alt="result" style={{
-              width: 'clamp(50px, 50vw, 1200px)', borderRadius: 8, marginTop: '0vh'
+              width: 'clamp(50px, 43vw, 1000px)', borderRadius:2, marginTop: '0vh'
             }} />
             <div className="score-bar" style={{
                 /*backgroundColor: 'white',*/ 
