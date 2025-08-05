@@ -1,3 +1,48 @@
+"""
+File: model.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+Defines and instantiates a wide range of CNN-based image classification models for use in
+gastric endoscopic image diagnosis. The models support both standard architectures and
+custom modifications such as attention blocks (e.g., SE in DenseNet).
+
+Supported Architectures:
+------------------------
+- ResNet: resnet18, resnet34, resnet50, resnet101
+- DenseNet: densenet121, densenet169
+- DenseNet + SE block (attention)
+- EfficientNet: B0–B7
+- EfficientNetV2: S, M, L
+- Vision Transformers: ViT_B_16
+- Swin Transformers: swin_t, swin_s, swin_b
+- Any additional model supported by `timm` (via fallback in `get_model()`)
+
+Functionality:
+--------------
+- All models are initialized with optional pretrained ImageNet weights.
+- Each model replaces the final classification layer to match a user-defined number of output classes.
+- A unified interface via `get_model(name, num_classes, pretrained)` is provided for easy instantiation.
+
+Usage:
+------
+>>> model = get_model("efficientnetb4", num_classes=5, pretrained=True)
+
+Dependencies:
+-------------
+- PyTorch
+- torchvision
+- timm (for extended support)
+
+Notes:
+------
+- `get_model()` handles lowercase names and supports dynamic discovery of timm models.
+
+"""
+
+
 import torch
 import torch.nn as nn
 import torchvision.models as models

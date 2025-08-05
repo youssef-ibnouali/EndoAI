@@ -43,7 +43,7 @@ const ReportPage = () => {
         justifyContent: 'center',
         textAlign: 'center'
       }}>
-        <img src={logo} alt="logo" style={{ width: 'clamp(70px, 15vw, 350px)', marginBottom: '5vh' }} />
+        {/*<img src={logo} alt="logo" style={{ width: 'clamp(70px, 15vw, 350px)', marginBottom: '5vh' }} />*/}
         {diagnosis  && (
           <p style={{ fontSize: 'clamp(1rem, 1.8vw, 1.5rem)', fontWeight: 'bold', color: '#000000' }}>
             Diagnosis:{" "}

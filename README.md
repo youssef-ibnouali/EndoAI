@@ -94,17 +94,18 @@ EndoAI/
 │   ├── model_compar/             # Plots comparing different models
 │   └── ...
 ├── uploads/                      # Temporarily stores uploaded endoscopic images
-├── train_cnn/                    # Core model training and inference logic
-│   ├── model.py                  # CNN and transformer model definitions
-│   ├── train.py                  # Training loop with early stopping, metrics
-│   ├── classify_nbi_image.py     # Patch extraction and classification pipeline
-│   ├── predict_batch.py          # Python-based batch prediction (used via MATLAB)
-│   ├── try_models.py             # Batch test multiple models on your dataset
+├── train_cnn/                    # Core module for training, evaluation, and inference
+│   ├── model.py                  # Definitions of all supported CNN and Transformer architectures
+│   ├── train.py                  # Training loop with early stopping, weighted loss, and validation
+│   ├── classify_nbi_image.py     # Semi-automatic pipeline: patch selection, filtering, scoring, and classification
+│   ├── try_models.py             # Script to train and evaluate multiple models with metrics export
+│   ├── predict_batch.py          # Optional: batch classification entry point (used from MATLAB or scripts)
+│   ├── data_process.py           # Handles augmentation, elastic deformation, and dataset splitting
+│   ├── extract_patchs.py         # GUI-assisted patch extraction and annotation from selected endoscopic image
+│   ├── model_comparaison.py      # Compare trained models via global and per-class metrics and plots
 │   ├── data/
-│   │   ├── raw/                  # Raw patches before augmentation
-│   │   ├── processed/            # Train/val/test split directories
-│   │   └── augmentation.py       # Data augmentation logic
-│   └── utils/                    # Optional: metrics, plots, etc.
+│   │   ├── raw/                  # Human-labeled image patches (e.g. AG, IM, Normal, etc.)
+│   │   ├── processed/            # Augmented and split dataset (train/val/test folders)
 ├── matlab/                       # MATLAB scripts for integration and visualization
 │   ├── classify_nbi_image_cnn.m  # Calls Python classifier, draws detections
 │   ├── entropy_selection.m       # Patch selection using entropy and masks
@@ -132,21 +133,87 @@ Each folder contains patch images for the corresponding class.
 
 ---
 
-## 💡 How to Extend
+## 🧭 How to Train & Deploy Like Me
 
-To add more models, simply define them in `train_cnn/model.py` using the `get_model()` function pattern. You can test new models by adding their names to `models = [...]` in `try_models.py`.
+To follow the same development and experimentation process used in this project, here’s a 4-step pipeline:
+
+### 1️⃣ Prepare Your Data
+
+- **Run `extract_patchs.py`**:  
+  Select your endoscopic image (via GUI), and the system will automatically extract high-entropy and non-blurry patches.
+- **Manually classify patches**:  
+  Move the extracted patch images into folders inside `train_cnn/data/raw/` using medical knowledge (e.g., AG, IM, Normal...).
+- **Run `data_process.py`**:  
+  This will split your data into `train/val/test`, apply augmentation (elastic deformation + flips/rotations), and prepare it for training.
+
+```bash
+python train_cnn/extract_patchs.py
+# → manually organize patches into folders by class
+python train_cnn/data_process.py
+```
+
+---
+
+### 2️⃣ Select and Compare Models (optional)
+
+If you're **testing several architectures**:
+
+- **Add your model** to `train_cnn/model.py` using the same class structure as existing ones.
+- **Add your model's name** to the `models = [...]` list inside `try_models.py`.
+- **Run `try_models.py`** to automatically train and evaluate each model.
+- **Run `model_comparaison.py`** to generate visual comparisons (bar plots + CSV summaries) and pick the best one based on `macro_f1`.
+
+```bash
+python train_cnn/try_models.py
+python train_cnn/model_comparaison.py
+```
+
+> 🧠 If your model is pretrained, make sure to use the correct input size and load pretrained weights in your custom class.
+
+---
+
+### 3️⃣ Train Your Final Model
+
+If you already selected a single model to train:
+
+- **Go to `main.py`**
+- Replace `model_name = ...` with your model's name
+- Adjust training settings (epochs, batch size, learning rate...)
+- Run the script to train and save your `.pth` model
+
+```bash
+python main.py
+```
+
+> This generates training plots, evaluation metrics, and a trained model file in `results/`.
+
+---
+
+### 4️⃣ Use the Model in Classification
+
+To deploy your trained model in the **web platform**:
+
+- Open `train_cnn/classify_nbi_image.py`
+- Replace the value of `model_path` with the path to your new `.pth` file (e.g., `results/model_20250801_1732.pth`)
+- The classification API will now use your updated model
+
+```python
+model_path = "results/model_date_hour.pth"
+```
+
+That’s it! You can now upload images via the frontend and get real-time patch-wise classification and PDF reports using your custom-trained model.
 
 ---
 
 ## 🌍 API Endpoints (Flask)
 
-| Endpoint             | Method | Description                          |
-|----------------------|--------|--------------------------------------|
-| `/upload`            | POST   | Uploads and classifies an image      |
-| `/classify`          | POST   | Classifies uploaded image patches    |
-| `/report`            | GET    | Generates the PDF report             |
-| `/organizations`     | GET    | Lists available organizations        |
-| `/login`             | POST   | Validates login via `users.json`     |
+| Endpoint             | Method | Description                                                                  |
+|----------------------|--------|------------------------------------------------------------------------------|
+| `/classify`          | POST   | Uploads an image and returns patch-wise classification and scores           |
+| `/result.png`        | GET    | Returns the annotated image with bounding boxes                             |
+| `/generate_report`   | GET    | Generates and downloads a PDF report with diagnosis and patient history      |
+| `/organizations`     | GET    | Returns available organizations from `users.json`                            |
+| `/login`             | POST   | Authenticates user credentials using data from `users.json`                  |
 
 ---
 

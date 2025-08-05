@@ -1,3 +1,57 @@
+"""
+File: train.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+Contains the training loop for supervised learning of convolutional neural networks (CNNs)
+on gastric endoscopic image classification. Includes support for early stopping,
+adaptive learning rate scheduling, class imbalance handling, and performance tracking.
+
+Main Function:
+--------------
+train(model, train_loader, val_loader, device, epochs=10, lr=1e-3, patience=20,
+      save_path="results/model.pth", class_weights=None)
+
+Parameters:
+-----------
+- model         : PyTorch model to be trained
+- train_loader  : DataLoader for the training set
+- val_loader    : DataLoader for the validation set
+- device        : 'cuda' or 'cpu'
+- epochs        : Maximum number of training epochs (default: 10)
+- lr            : Initial learning rate (default: 1e-3)
+- patience      : Early stopping patience based on validation loss (default: 20)
+- save_path     : Path to save the best model (default: "results/model.pth")
+- class_weights : Optional tensor of class weights for imbalanced data
+
+Returns:
+--------
+- history       : Dictionary containing lists of train/validation loss and accuracy
+- cm            : Final confusion matrix (numpy array) from validation set
+
+Features:
+---------
+- CrossEntropyLoss with optional class weights and label smoothing (train only)
+- ReduceLROnPlateau scheduler for dynamic learning rate adjustment
+- Early stopping based on best validation loss
+- Tracking and returning of confusion matrix
+- Automatic directory creation and model saving
+
+Usage:
+------
+>>> from train import train
+>>> history, cm = train(model, train_loader, val_loader, device, epochs=15)
+
+Dependencies:
+-------------
+- torch
+- sklearn.metrics (for confusion matrix)
+- numpy
+- os
+"""
+
 import torch
 import torch.nn as nn
 from sklearn.metrics import confusion_matrix

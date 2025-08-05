@@ -1,3 +1,42 @@
+"""
+File: data_process.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+This script prepares and augments a dataset of endoscopic patch images for training.
+It performs three main tasks:
+1. Cleans existing processed data directories.
+2. Splits the raw dataset into train/validation/test subsets.
+3. Applies data augmentation (flips, rotations, elastic transforms) to training images and saves the processed set to disk.
+
+The result is a structured and augmented dataset ready for training CNN models for gastric image classification.
+
+Main Components:
+----------------
+- CONFIG: Input/output paths and train/val/test split ratios
+- clean_dir(): Recursively deletes and recreates a directory
+- augment_and_save(): Applies multiple image augmentations and saves them
+- split_dataset(): Splits dataset into subsets according to ratios
+- __main__: Runs the complete pipeline step-by-step
+
+Dependencies:
+-------------
+- torchvision
+- albumentations
+- PIL (Pillow)
+- OpenCV
+- NumPy
+- Python ≥ 3.6
+- Folder structure under `train_cnn/data/`
+
+Output:
+-------
+- Augmented dataset in: train_cnn/data/processed
+"""
+
+
 import os
 import random
 import shutil

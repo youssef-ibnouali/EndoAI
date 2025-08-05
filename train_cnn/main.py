@@ -1,3 +1,55 @@
+"""
+File: main.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+Main training and evaluation script for gastric endoscopy classification using deep learning.
+This script loads data, trains a selected CNN model, evaluates it on the test set, visualizes results,
+and exports performance metrics in both plots and JSON formats.
+
+Key Functions and Features:
+---------------------------
+- Loads and preprocesses the dataset (train, val, test) using torchvision `ImageFolder`.
+- Initializes a CNN architecture using `get_model()` from `model.py`.
+- Trains the model using the `train()` function (with early stopping and class weighting).
+- Saves training loss curves and confusion matrix.
+- Computes detailed evaluation metrics (accuracy, precision, recall, F1-score, specificity).
+- Saves a prediction preview on test images (`plot_test_predictions`).
+- Exports metrics to `results/metrics_<model>_<timestamp>.json`.
+
+Settings:
+---------
+- Model name (`model_name`)
+- Input image resize dimensions
+- Training hyperparameters (epochs, batch size, learning rate, patience)
+
+Outputs:
+--------
+- Trained model checkpoint (in `results/`)
+- Training/validation loss plot + confusion matrix (in `results/plots`)
+- Test predictions visualization (in `results/`)
+- Evaluation metrics JSON file (in `results/`)
+
+Usage:
+------
+Run this script directly to train and evaluate a single model:
+>>> python main.py
+
+Make sure the training/validation/test datasets exist under:
+>>> train_cnn/data/processed/{train,val,test}/
+
+Dependencies:
+-------------
+- torch, torchvision
+- sklearn
+- matplotlib, seaborn, numpy
+- model.py (defines all CNN variants)
+- train.py (defines the training loop)
+"""
+
+
 import torch
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader

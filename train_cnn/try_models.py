@@ -1,3 +1,56 @@
+"""
+File: try_models.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+This script automates the training, evaluation, and comparison of multiple CNN architectures for classifying endoscopic image patches into five diagnostic categories.
+
+It handles:
+- Training each model with class-balanced loss
+- Evaluating performance using multiple metrics
+- Saving trained models and evaluation plots
+- Exporting detailed metrics to JSON
+
+Key Features:
+-------------
+- Supports a wide range of architectures (EfficientNet, ResNet, ViT, etc.)
+- Uses class weights for handling imbalanced datasets
+- Evaluates with accuracy, precision, recall, F1-score, specificity, and AUC
+- Generates confusion matrices and loss curves
+- Saves all metrics per model, and aggregates them into a global JSON file
+
+Outputs:
+--------
+- Trained models: `results/tested_models/trained_models/`
+- Plots: `results/tested_models/plots/`
+- Metrics (per model): `results/tested_models/metrics/metrics_<model>.json`
+- Aggregated metrics: `results/tested_models/metrics/all_metrics.json`
+
+Dependencies:
+-------------
+- PyTorch
+- torchvision
+- scikit-learn
+- matplotlib
+- seaborn
+- numpy
+- PIL
+- Python ≥ 3.7
+
+Usage:
+------
+Adjust the `models` list to include the architectures you want to try.
+Then run:
+    python try_models.py
+
+Notes:
+------
+- Data must be prepared in `train_cnn/data/processed/` with subfolders `train/`, `val/`, and `test/`
+- Model architectures must be supported by `get_model()` in `model.py`
+"""
+
 import torch
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
@@ -25,39 +78,24 @@ os.makedirs("results/plots", exist_ok=True)
 
 # --- SETTINGS ---
 models = [
-    #"efficientnetb0", "efficientnetb1", "efficientnetb2", 
-    #"efficientnetb3", "efficientnetb4", "efficientnetb5", 
-    "efficientnetb6",
+    "efficientnetb0", "efficientnetb1", "efficientnetb2", "efficientnetb3", "efficientnetb4", "efficientnetb5", "efficientnetb6",
 
-    #"efficientnetv2_s",
-    "efficientnetv2_m",
-    #"efficientnetv2_l",
+    "efficientnetv2_s", "efficientnetv2_m","efficientnetv2_l",
     
-    #"resnet18",
-    #"resnet34",
-    #"resnet50",
-    #"resnet101",
-    #"resnext50_32x4d",
-    #"resnext101_32x8d",
+    "resnet18", "resnet34", "resnet50", "resnet101",
+    "resnext50_32x4d", "resnext101_32x8d",
 
-    #"densenet121",
-    #"densenet169",
-    #"densenetse",
+    "densenet121", "densenet169", "densenetse",
 
-    #"vit_b_16",
-    #"deit_base_patch16_224",
-    #"beit_base_patch16_224",
+    "vit_b_16",
+    "deit_base_patch16_224", "beit_base_patch16_224",
     
-    #"swin_t",
-    #"swin_s",
-    #"swin_b",
+    "swin_t", "swin_s", "swin_b",
 
-    #"convnext_tiny",
-    #"convnext_small",
-    #"convnext_base",
+    "convnext_tiny", "convnext_small", "convnext_base",
 
-    #"mobilenet_v3_large",
-    #"efficientnet_lite0"
+    "mobilenet_v3_large",
+    "efficientnet_lite0"
 ]
 
 num_classes = 5
@@ -143,7 +181,7 @@ for model_name in models:
 
         # --- TRAIN ---
         timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-        model_save_path = f"results/trained_models/model_{model_name}_{timestamp}.pth"
+        model_save_path = f"results/tested_models/trained_models/model_{model_name}_{timestamp}.pth"
 
         # Train and save
         history, cm = train(model, train_loader, val_loader, device, epochs=epochs,
@@ -167,10 +205,10 @@ for model_name in models:
         plt.title("Confusion Matrix")
         plt.xlabel("Predicted")
         plt.ylabel("True")
-        plt.savefig(f"results/plots/confusion_matrix_{model_name}.png")
+        plt.savefig(f"results/tested_models/plots/confusion_matrix_{model_name}.png")
         plt.close()
 
-        print("Plots saved in 'results/plots'.")
+        print("Plots saved in 'results/tested_models/plots'.")
 
         # --- EVALUATE ---
 
@@ -225,7 +263,7 @@ for model_name in models:
             metrics["auc_per_class"] = "not_computable"
 
         # Save metrics as JSON
-        metrics_path = f"results/metrics_{model_name}.json"
+        metrics_path = f"results/tested_models/metrics/metrics_{model_name}.json"
         with open(metrics_path, "w") as f:
             json.dump(metrics, f, indent=4)
 
@@ -241,7 +279,7 @@ for model_name in models:
         print(f"Error with {model_name} : {e}")
         continue  
 
-with open("results/bALL.json", "w") as f:
+with open("results/tested_models/metrics/all_metrics.json", "w") as f:
     json.dump(all_metrics, f, indent=4)
 
 

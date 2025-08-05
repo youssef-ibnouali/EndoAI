@@ -1,3 +1,45 @@
+"""
+File: extract_patchs.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+This script implements a semi-automatic patch extraction algorithm for endoscopic images.
+It allows a user to select an image via a file dialog, then:
+- Analyzes the image using entropy, intensity, and sharpness filters
+- Selects high-information patches using a sliding window approach with NMS
+- Classifies each patch using a pretrained CNN (e.g., EfficientNetB4)
+- Saves the extracted patches into the `train_cnn/data/raw/` folder
+- Visualizes patch locations and predicted labels in an annotated image
+
+Use Case:
+---------
+After patch extraction, the user can manually sort patches into diagnosis folders
+(AG, IM, Normal, etc.) for further training or supervised analysis.
+
+Main Components:
+----------------
+- compute_entropy(): Local entropy filtering
+- nms(): Non-maximum suppression on patch candidates
+- extract_from_selected_image(): Main function to load, process, predict, and export patches
+
+Output:
+-------
+- Patch files saved to: train_cnn/data/raw/
+- Annotated overlay image shown and saved to: results/annotated_<image>.png
+
+Dependencies:
+-------------
+- OpenCV
+- PyTorch
+- torchvision
+- matplotlib
+- scikit-image
+- Tkinter (for file selection)
+"""
+
+
 import os
 import cv2
 import torch
@@ -50,12 +92,12 @@ def extract_from_selected_image(model_name="efficientnetb4"):
     class_names = ['AG', 'Cancer', 'Dysplasia', 'IM', 'Normal']
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # === Choisir image depuis l’explorateur ===
+    # === Choose image ===
     root = Tk()
     root.withdraw()
     image_path = filedialog.askopenfilename(title="Choose an image", filetypes=[("Image files", "*.png;*.jpg")])
     if not image_path:
-        print("❌ No image selected.")
+        print("No image selected !")
         return
 
     basename = os.path.splitext(os.path.basename(image_path))[0]
@@ -76,10 +118,6 @@ def extract_from_selected_image(model_name="efficientnetb4"):
 
     a = np.percentile(gray_eq, 99.95)
     b = np.percentile(gray_eq, 6.5)
-
-    #cv2.imwrite("results/debug_mask.png", (combined_mask * 255).astype(np.uint8))
-    #cv2.imwrite("results/debug_intensity.png", (intensity_mask * 255).astype(np.uint8))
-    #cv2.imwrite("results/debug_entropy.png", (entropy_norm * 255).astype(np.uint8))
 
     # === Patch sélection ===
     candidates = []

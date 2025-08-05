@@ -1,3 +1,34 @@
+"""
+File: classify_nbi_image.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+This module implements the core logic for processing NBI endoscopic images, selecting high-quality patches, and classifying them using a CNN model
+(e.g., EfficientNetB4). The classification is used for the automated detection of gastric tissue conditions such as AG, IM, Dysplasia, and Cancer.
+
+Main Functions:
+---------------
+- classify_nbi_image(image_path, model_name="efficientnetb4"):
+    Processes an input image, selects patches using entropy and intensity,
+    performs classification on selected regions, and returns:
+        - Path to annotated image with predictions
+        - Class-wise score dictionary (percentage)
+        - Average prediction confidence
+
+Dependencies:
+-------------
+- OpenCV
+- PyTorch
+- torchvision
+- NumPy
+- scikit-image
+- matplotlib (optional for debugging)
+- Local model from train_cnn.model
+"""
+
+
 import cv2
 import numpy as np
 import torch
@@ -73,9 +104,6 @@ def classify_nbi_image(image_path, model_name="efficientnetb4"):
     combined_mask = np.logical_and(entropy_bin, intensity_mask)
     combined_mask = cv2.dilate(combined_mask.astype(np.uint8), np.ones((3,3), np.uint8), iterations=1)
 
-    #cv2.imwrite("results/debug_mask.png", (combined_mask * 255).astype(np.uint8))
-    #cv2.imwrite("results/debug_entropy.png", (entropy_norm * 255).astype(np.uint8))
-
     # Sliding window patch selection
     candidates = []
     a = np.percentile(gray_eq, 99.95)
@@ -93,7 +121,7 @@ def classify_nbi_image(image_path, model_name="efficientnetb4"):
             score = valid_ratio * entropy_img[y:y+patch_size, x:x+patch_size].mean()
             candidates.append((x, y, score))
 
-    #print(len(candidates))
+    
     # Non-max suppression
     if not candidates:
         return None, {cls: 0 for cls in class_names}

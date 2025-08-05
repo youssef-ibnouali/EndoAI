@@ -1,3 +1,48 @@
+"""
+File: model_comparaison.py
+Author: Youssef IBNOUALI
+Date: August 2025
+
+Description:
+------------
+This script analyzes and compares the performance of multiple trained CNN models for endoscopic image classification. It reads model evaluation metrics from
+`results/tested_models/metrics/all_metrics.json` and generates:
+1. A grouped bar plot showing global metrics (accuracy, precision, recall, F1)
+2. A multi-class bar and line plot for per-class F1 scores
+3. A CSV file summarizing all results
+4. A console summary highlighting the best model by macro F1 score
+
+Main Components:
+----------------
+- Load evaluation data from JSON
+- Plot grouped bar chart of global metrics
+- Plot combined per-class F1 scores
+- Export results as a CSV summary
+- Identify the top-performing model
+
+Outputs:
+--------
+- `results/model_compar/model_global_metrics_barplot.png`  
+- `results/model_compar/model_per_class_f1_barplot.png`  
+- `results/model_compar/summary_metrics.csv`  
+- Console printout of the best model by macro F1
+
+Dependencies:
+-------------
+- matplotlib
+- pandas
+- numpy
+- json
+- os
+- Python ≥ 3.6
+
+Notes:
+------
+- All models must follow the same evaluation structure as expected in the JSON file.
+- Colors are consistent per class across plots for easier comparison.
+"""
+
+
 import json
 import matplotlib.pyplot as plt
 import os
@@ -5,7 +50,7 @@ import numpy as np
 import pandas as pd
 
 # === Load data ===
-with open("results/all_metrics.json") as f:
+with open("results/tested_models/metrics/all_metrics.json") as f:
     data = json.load(f)
 
 models = [entry["model"] for entry in data]
@@ -57,11 +102,11 @@ per_class_values = {
 }
 
 class_colors = {
-    "Normal": "#2ca02c",   # green
-    "AG": "#1f77b4",       # blue
-    "IM": "#ffc013",       # yellow
-    "Dysplasia": "#d62728",# red
-    "Cancer": "#9467bd",   # purple
+    "Normal": "#2ca02c", 
+    "AG": "#1f77b4",    
+    "IM": "#ffc013",   
+    "Dysplasia": "#d62728",
+    "Cancer": "#9467bd", 
 }
 
 plt.figure(figsize=(12, 6))
