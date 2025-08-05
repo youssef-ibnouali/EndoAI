@@ -20,7 +20,7 @@ const ReportPage = () => {
 
 
     const handleDownload = () => {
-    window.open(`http://localhost:5000/generate_report?name=${name}&diagnosis=${diagnosis}`, '_blank');
+    window.open(`https://8vh7qbwt-5000.euw.devtunnels.ms/generate_report?name=${name}&diagnosis=${diagnosis}`, '_blank');
     };
 
   return (

@@ -17,7 +17,7 @@ const LoginPage = () => {
     useEffect(() => {
     const fetchOrganizations = async () => {
         try {
-        const response = await axios.get('http://localhost:5000/organizations');
+        const response = await axios.get('https://8vh7qbwt-5000.euw.devtunnels.ms/organizations');
         const orgs = Array.isArray(response.data) ? response.data : [];
         setOrganizations(orgs);
         setOrg(orgs[0] || '');
@@ -38,7 +38,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('https://8vh7qbwt-5000.euw.devtunnels.ms/login', {
         organization,
         username,
         password,

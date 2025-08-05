@@ -39,9 +39,9 @@ const UploadPage = () => {
     formData.append('name', name);
 
     try {
-      const response = await axios.post('http://localhost:5000/classify', formData);
+      const response = await axios.post('https://8vh7qbwt-5000.euw.devtunnels.ms/classify', formData);
       setScores(response.data.scores);
-      setResultImgUrl(`http://localhost:5000${response.data.result_img}?t=${Date.now()}`);
+      setResultImgUrl(`https://8vh7qbwt-5000.euw.devtunnels.ms${response.data.result_img}?t=${Date.now()}`);
       setDiagnosis(response.data.diagnosis);
       setConfidence(response.data.confidence);
       

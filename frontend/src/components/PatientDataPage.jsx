@@ -22,7 +22,7 @@ const PatientDataPage = () => {
 
   const fetchRecords = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/patient_records?name=${encodeURIComponent(patientName)}`);
+      const res = await axios.get(`https://8vh7qbwt-5000.euw.devtunnels.ms/patient_records?name=${encodeURIComponent(patientName)}`);
       setRecords(res.data.records || []);
     } catch (err) {
       console.error(err);
@@ -31,7 +31,7 @@ const PatientDataPage = () => {
 
   const handleAddRecord = async () => {
     try {
-      await axios.post('http://localhost:5000/patient_records', {
+      await axios.post('https://8vh7qbwt-5000.euw.devtunnels.ms/patient_records', {
         name: patientName,
         diagnosis: newDiagnosis,
         comments: newComment
@@ -46,7 +46,7 @@ const PatientDataPage = () => {
 
   const handleDelete = async (index) => {
     try {
-      await axios.delete(`http://localhost:5000/patient_records?name=${encodeURIComponent(patientName)}&index=${index}`);
+      await axios.delete(`https://8vh7qbwt-5000.euw.devtunnels.ms/patient_records?name=${encodeURIComponent(patientName)}&index=${index}`);
       fetchRecords();
     } catch (err) {
       console.error(err);
