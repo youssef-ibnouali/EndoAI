@@ -64,8 +64,33 @@ const LoginPage = () => {
         justifyContent: 'center',
         height: '100vh',
         width: '100vw',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative'
       }}>
+        <a
+          href="https://www.youtube.com/watch?v=zR6D5o5bIdU&list=PLeP7OZvLMPPfgWw8kHGZzPNhurUBbTbz3"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            position: 'absolute',
+            top: '18px',
+            right: '32px',
+            marginTop: 0,
+            display: 'inline-block',
+            color: '#d10d10ff',
+            textDecoration: 'underline',
+            fontSize: '0.95rem',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'color 0.2s'
+          }}
+          onMouseEnter={e => e.target.style.color = '#525252ff'}
+          onMouseLeave={e => e.target.style.color = '#d10d10ff'}
+        >
+          Watch Tutorial
+        </a>
+
         <div style={{ textAlign: 'center', width: '100%', maxWidth: '480px' }}>
           <img src={logo} alt="logo" style={{ width: 'clamp(100px, 25vw, 400px)', marginBottom: '3vh' }} />
 
