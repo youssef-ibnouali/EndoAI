@@ -68,7 +68,7 @@ const LoginPage = () => {
         position: 'relative'
       }}>
         <a
-          href="https://www.youtube.com/watch?v=zR6D5o5bIdU&list=PLeP7OZvLMPPfgWw8kHGZzPNhurUBbTbz3"
+          href="https://youtu.be/0PQfT59moOc?si=p-7NB35CrqERKS5i"
           target="_blank"
           rel="noopener noreferrer"
           style={{
