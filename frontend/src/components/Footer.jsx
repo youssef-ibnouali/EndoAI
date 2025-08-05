@@ -42,16 +42,21 @@ export default function Footer() {
             </p>
           </div>
           <br />
-          <img src="./src/assets/polynantes_logo.png" alt="Partner 1" />
-          <img src="./src/assets/mta_logo.png" alt="Partner 2" />
-          <img src="./src/assets/hospital_logo.jpg" alt="Partner 3" />
+          <a href="https://polytech.univ-nantes.fr" target="_blank" rel="noopener noreferrer">
+            <img src="./src/assets/polynantes_logo.png" alt="Partner 1" />
+          </a>
+          <a href="https://mta.ro" target="_blank" rel="noopener noreferrer">
+            <img src="./src/assets/mta_logo.png" alt="Partner 2" />
+          </a>
+          <a href="https://www.scumc.ro" target="_blank" rel="noopener noreferrer">
+            <img src="./src/assets/hospital_logo.jpg" alt="Partner 3" />
+          </a>
         </div>
         <div className="footer-section credits">
           <p>© 2025 Youssef IBNOUALI – EndoAI Project @ MTA Bucharest</p>
           <p>All rights reserved | Legal mentions to be added</p>
         </div>
       </div>
-
       {/* LEFT side: Contact Form */}
       <div className="footer-contact">
         <div className="footer-section contact">

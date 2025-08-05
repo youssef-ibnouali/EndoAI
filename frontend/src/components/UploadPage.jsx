@@ -152,44 +152,61 @@ const UploadPage = () => {
               width: 'clamp(50px, 50vw, 1200px)', borderRadius: 8, marginTop: '0vh'
             }} />
             <div className="score-bar" style={{
-              /*backgroundColor: 'white',*/ 
-              padding: 12, borderRadius: 6,
-              marginTop: '2vh', fontWeight: 'bold', fontSize: 'clamp(0.8rem, 1.2vw, 1.3rem)', marginBottom: '1vh'
-            }}>
-              <span style={{ color: '#ae9714' }}> IM: {formatPercent(scores.IM)}</span> &nbsp;|
-              <span style={{ color: '#009cc7' }}> AG: {formatPercent(scores.AG)}</span> &nbsp;|
-              <span style={{ color: '#018f48' }}> Normal: {formatPercent(scores.Normal)}</span> &nbsp;|
-              <span style={{ color: '#c20000' }}> Dysplasia: {formatPercent(scores.Dysplasia)}</span> &nbsp;|
-              <span style={{ color: '#890089' }}> Cancer: {formatPercent(scores.Cancer)}</span>
-            </div>
+                /*backgroundColor: 'white',*/ 
+                padding: 12, borderRadius: 6,
+                marginTop: '2vh', fontWeight: 'bold', fontSize: 'clamp(0.8rem, 1.2vw, 1.3rem)', marginBottom: '1vh'
+              }}>
+                <span style={{ color: '#ae9714' }}> IM: {formatPercent(scores.IM)}</span> &nbsp;|
+                <span style={{ color: '#009cc7' }}> AG: {formatPercent(scores.AG)}</span> &nbsp;|
+                <span style={{ color: '#018f48' }}> Normal: {formatPercent(scores.Normal)}</span> &nbsp;|
+                <span style={{ color: '#c20000' }}> Dysplasia: {formatPercent(scores.Dysplasia)}</span> &nbsp;|
+                <span style={{ color: '#890089' }}> Cancer: {formatPercent(scores.Cancer)}</span>
+              </div>
 
-            {/* NEXT BUTTON */}
-            <button onClick={() => navigate('/report', {
-              state: { name, diagnosis, confidence, resultImgUrl}
-            })}
-              style={{
+              {/* NEXT BUTTON */}
+              <button
+                onClick={() => navigate('/report', {
+                state: { name, diagnosis, confidence, resultImgUrl }
+                })}
+                style={{
                 marginTop: '1vh',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer'
-              }}>
-              <img src={nextIcon} alt="continue" style={{ width: 'clamp(40px, 8vw, 130px)' }} />
-            </button>
-          </div>
-        )}
-      </div>
+                }}
+                onMouseOver={e => (e.currentTarget.firstChild.style.transform = 'scale(1.1)')}
+                onMouseOut={e => (e.currentTarget.firstChild.style.transform = 'scale(1)')}
+              >
+                <img src={nextIcon} alt="continue" style={{ width: 'clamp(40px, 8vw, 130px)', transition: 'transform 0.2s' }} />
+              </button>
+              </div>
+            )}
+            </div>
 
-      {/* RETURN BUTTON */}
-      <button onClick={() => navigate('/home')} style={{
-        background: 'none',
-        border: 'none',
-        position: 'absolute',
-        bottom: '4vh',
-        left: '5vw',
-        cursor: 'pointer',
-      }}>
-        <img src={returnIcon} alt="return" style={{ width: 'clamp(40px, 5vw, 90px)' }} />
-      </button>
+            {/* RETURN BUTTON */}
+
+          <button
+              onClick={() => navigate('/home')}
+              style={{
+                  background: 'none',
+                  border: 'none',
+                  position: 'absolute',
+                  bottom: '2vh',
+                  left: '5vw',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s'
+              }}
+              onMouseOver={e => (e.currentTarget.firstChild.style.transform = 'scale(1.1)')}
+              onMouseOut={e => (e.currentTarget.firstChild.style.transform = 'scale(1)')}
+          >
+              <img
+                  src={returnIcon}
+                  alt="return"
+                  style={{ width: 'clamp(40px, 5vw, 90px)', transition: 'transform 0.2s' }}
+              />
+          </button>
+
+
     </div>
     <Footer />
     </>

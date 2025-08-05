@@ -23,14 +23,16 @@ const Header = () => {
       <img
         src={homeIcon}
         alt="home"
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/home')}
         style={{ width: 'clamp(40px, 6vw, 90px)', cursor: 'pointer' }}
+        onMouseOver={e => e.currentTarget.style.filter = 'brightness(0.85)'}
+        onMouseOut={e => e.currentTarget.style.filter = ''}
       />
-      <img src={logo} alt="logo" style={{ width: 'clamp(100px, 25vw, 400px)' }} />
+      <img src={logo} style={{ width: 'clamp(100px, 25vw, 400px)', cursor: 'pointer' }} alt="logo" onClick={() => navigate('/')}  />
       <div style={{
         fontWeight: 'bold',
         fontSize: 'clamp(1rem, 1.5vw, 1.6rem)',
-        color: '#4b4b4b'
+        color: '#000000ff'
       }}>
         {name}
       </div>

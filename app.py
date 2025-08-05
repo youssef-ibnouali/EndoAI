@@ -21,7 +21,7 @@ os.makedirs(RESULT_FOLDER, exist_ok=True)
 
 # Load patient history data
 try:
-    with open('patient_data/patient_data.json', 'r') as f:
+    with open('patient_data/patients.json', 'r') as f:
         patient_data = json.load(f)
 except Exception as e:
     patient_data = {}
@@ -117,7 +117,6 @@ def result_img():
 def generate_report():
     name = unquote(request.args.get('name', 'Unknown'))
     diagnosis = request.args.get('diagnosis', 'Uncertain')
-    print("Received name from frontend:", repr(name))
 
     explanations = {
         'Normal': (
@@ -178,19 +177,16 @@ def generate_report():
     message = explanations.get(diagnosis, "No specific explanation found.")
 
     history_lines = []
-    print("Searching in patient_data names:")
-    for patient in patient_data:
+    patients = load_patient_data()
+    for patient in patients:
         print("  -", repr(patient.get('name', '')))
 
-    # Try to find matching patient in the list
-    for patient in patient_data:
+    for patient in patients:
         if patient.get('name', '').strip().lower() == name.strip().lower():
-            print("MATCH FOUND:", patient['name'])
             for record in patient.get('records', []):
-                line = f"- {record['date']}: {record['diagnosis']} → {record['comments']}"
+                line = f"- {record['date']}: {record['diagnosis']} - {record['comments']}"
                 history_lines.append(line)
             break
-
 
 
     pdf = FPDF(format='A4')
@@ -215,14 +211,32 @@ def generate_report():
         locale.setlocale(locale.LC_TIME, 'English')
     pdf.cell(200, 10, txt=f"Date: {date.today().strftime('%B %d, %Y')}", ln=1)
     pdf.ln(5)
-    pdf.multi_cell(0, 10, f"Remarks:\n{message}")
+    pdf.multi_cell(0, 10, f"Remarks:")
+    pdf.set_font("Arial", style="I", size=12)
+    pdf.multi_cell(0, 8,message)
+    pdf.set_font("Arial", size=12)  
     pdf.ln(8)
 
+    # Patient history as table
     if history_lines:
-        pdf.multi_cell(0, 8, "History of patient:\n" + "\n".join(history_lines))
+        pdf.set_font("Arial", size=12)
+        pdf.cell(0, 10, "History of patient:", ln=True)
+        
+        # Table header
+        pdf.set_font("Arial", style="B", size=11)
+        pdf.set_fill_color(220, 220, 220)  # Light grey
+        pdf.cell(40, 10, "Date", border=1, fill=True, align='C')
+        pdf.cell(35, 10, "Diagnosis", border=1, fill=True, align='C')
+        pdf.cell(0, 10, "Comments", border=1, ln=True, fill=True, align='C')
+
+        # Table rows
+        pdf.set_font("Arial", size=11)
+        for record in patient.get('records', []):
+            pdf.cell(40, 10, record['date'], border=1, align='C')
+            pdf.cell(35, 10, record['diagnosis'], border=1, align='C')
+            pdf.multi_cell(0, 10, record['comments'], border=1, align='C')
     else:
         pdf.multi_cell(0, 10, "History of patient: unknown")
-
 
     report_path = os.path.join(RESULT_FOLDER, f"{name}_report.pdf")
     pdf.output(report_path)
@@ -259,6 +273,71 @@ def get_organizations():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+PATIENT_DATA_FILE = 'patient_data/patients.json'
 
+def load_patient_data():
+    if os.path.exists(PATIENT_DATA_FILE):
+        with open(PATIENT_DATA_FILE, 'r') as f:
+            return json.load(f)
+    return []
+
+def save_patient_data(data):
+    with open(PATIENT_DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+@app.route('/patient_records', methods=['GET'])
+def get_patient_records():
+    name = request.args.get('name', '').strip().lower()
+    patients = load_patient_data()
+    for patient in patients:
+        if patient.get("name", "").strip().lower() == name:
+            return jsonify({"records": patient.get("records", [])})
+    return jsonify({"records": []})
+
+@app.route('/patient_records', methods=['POST'])
+def add_patient_record():
+    data = request.get_json()
+    name = data.get('name', '').strip()
+    diagnosis = data.get('diagnosis')
+    comments = data.get('comments', '')
+    today = datetime.today().strftime("%d/%m/%Y")
+
+    patients = load_patient_data()
+    for patient in patients:
+        if patient['name'].strip().lower() == name.strip().lower():
+            patient['records'].append({
+                "date": today,
+                "diagnosis": diagnosis,
+                "comments": comments
+            })
+            break
+    else:
+        patients.append({
+            "name": name,
+            "records": [{
+                "date": today,
+                "diagnosis": diagnosis,
+                "comments": comments
+            }]
+        })
+
+    save_patient_data(patients)
+    return jsonify({"success": True})
+
+@app.route('/patient_records', methods=['DELETE'])
+def delete_patient_record():
+    name = request.args.get('name', '').strip().lower()
+    index = int(request.args.get('index', -1))
+
+    patients = load_patient_data()
+    for patient in patients:
+        if patient['name'].strip().lower() == name:
+            if 0 <= index < len(patient['records']):
+                del patient['records'][index]
+                save_patient_data(patients)
+                return jsonify({"success": True})
+            break
+    return jsonify({"success": False, "message": "Patient or record not found"}), 404
+    
 if __name__ == '__main__':
     app.run(debug=True)

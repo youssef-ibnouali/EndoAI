@@ -155,49 +155,60 @@ const ReportPage = () => {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '1rem', // spacing between text and icon
-        marginBottom: '2vh'
-      }}>
-        <p className="report-label" style={{
-          fontSize: 'clamp(1rem, 1.8vw, 1.5rem)',
-          fontWeight: 'bold',
-          color: '#000000',
-          margin: 0
-        }}>
-          Check the medical report:
-        </p>
-
-        <button onClick={handleDownload} style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: 0,
-          marginLeft: '2.5rem'
-        }}>
-          <img src={docIcon} alt="Download PDF" title="Download PDF Report" style={{
-            width: 'clamp(40px, 4vw, 60px)'
-          }} />
-        </button>
-      </div>
-
-
-        {/* Return Button */}
-        <div style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          paddingLeft: '14vw',
-          marginBottom: '5vh'
-        }}>
-          <button onClick={() => navigate(-1)} style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer'
+         // spacing between text and icon
+          marginBottom: '2vh'
+              }}>
+          <p className="report-label" style={{
+            fontSize: 'clamp(1rem, 1.8vw, 1.5rem)',
+            fontWeight: 'bold',
+            color: '#000000',
+            margin: 0
           }}>
-            <img src={returnIcon} alt="Return" style={{ width: 'clamp(40px, 5vw, 90px)' }} />
-          </button>
-        </div>
+            Check the medical report:
+          </p>
 
+          <button
+            onClick={handleDownload}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              marginLeft: '2.5rem'
+            }}
+            onMouseOver={e => (e.currentTarget.firstChild.style.transform = 'scale(1.1)')}
+            onMouseOut={e => (e.currentTarget.firstChild.style.transform = 'scale(1)')}
+          >
+            <img src={docIcon} alt="Download PDF" title="Download PDF Report" style={{
+              width: 'clamp(40px, 4vw, 60px)',
+              transition: 'transform 0.2s'
+            }} />
+          </button>
+              </div>
+
+
+          {/* Return Button */}
+
+        <button
+            onClick={() => navigate(-1)}
+            style={{
+                background: 'none',
+                border: 'none',
+                position: 'absolute',
+                bottom: '2vh',
+                left: '5vw',
+                cursor: 'pointer',
+                transition: 'transform 0.2s'
+            }}
+            onMouseOver={e => (e.currentTarget.firstChild.style.transform = 'scale(1.1)')}
+            onMouseOut={e => (e.currentTarget.firstChild.style.transform = 'scale(1)')}
+        >
+            <img
+                src={returnIcon}
+                alt="return"
+                style={{ width: 'clamp(40px, 5vw, 90px)', transition: 'transform 0.2s' }}
+            />
+        </button>
 
       </div>
     </div>

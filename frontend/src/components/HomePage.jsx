@@ -16,6 +16,11 @@ const HomePage = () => {
       navigate('/upload', { state: { name } });
     }
   };
+  const handleCheckRecords = () => {
+    if (name.trim()) {
+      navigate(`/patient-data?name=${encodeURIComponent(name.trim())}`);
+    }
+  };
 
   return (
     <>
@@ -28,7 +33,6 @@ const HomePage = () => {
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2vh'
-      
     }}>
       <div style={{ textAlign: 'center', width: '100%', maxWidth: 600 }}>
         <img src={logo} alt="logo" style={{ width: 'clamp(100px, 25vw, 400px)' }} />
@@ -63,17 +67,59 @@ const HomePage = () => {
                   border: '2px solid #ccc'
                 }}
               />
-              <button type="submit" style={{ background: 'none', border: 'none', padding: 0 }}>
-                <img src={nextIcon} alt="next" style={{ width: 'clamp(35px, 10vw, 80px)', cursor: 'pointer' }} />
+
+              <button
+                type="button"
+                onClick={handleCheckRecords}
+                className="custom-btn-record"
+              >
+                Patient's Record
               </button>
+
+              <button
+                type="submit"
+                className="custom-btn-start"
+              >
+                Start
+              </button>
+
             </div>
           </form>
         </div>
       </div>
     </div>
     <Footer />
+    <style>
+      {`
+        .custom-btn-record {
+          background-color: #484747;
+          color: white;
+          padding: 0.5em 1.5em;
+          border-radius: 8px;
+          border: none;
+          cursor: pointer;
+          transition: background 0.2s;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        .custom-btn-record:hover {
+          background-color: #333;
+        }
+        .custom-btn-start {
+          background-color: #ab3c3e;
+          color: white;
+          padding: 0.5em 1.5em;
+          border-radius: 8px;
+          border: none;
+          cursor: pointer;
+          transition: background 0.2s;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        .custom-btn-start:hover {
+          background-color: #8a2a2c;
+        }
+      `}
+    </style>
     </>
-    
   );
 };
 

@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import HomePage from "./components/HomePage";
 import UploadPage from "./components/UploadPage";
 import ReportPage from "./components/ReportPage";
+import PatientDataPage from "./components/PatientDataPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<SplashScreen />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/patient-data" element={<PatientDataPage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/report" element={<ReportPage />} />
         </Routes>

@@ -94,7 +94,17 @@ const LoginPage = () => {
               style={inputStyle}
             />
 
-            <button type="submit" style={buttonStyle}>Login</button>
+            <button
+              type="submit"
+              style={{
+                ...buttonStyle,
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.target.style.backgroundColor = '#8c2c2e'}
+              onMouseLeave={e => e.target.style.backgroundColor = '#ab3c3e'}
+            >
+              Login
+            </button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
           </form>
         </div>
