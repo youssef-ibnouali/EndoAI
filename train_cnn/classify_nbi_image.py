@@ -40,6 +40,7 @@ import matplotlib.pyplot as plt
 from train_cnn.model import get_model
 import torch.nn.functional as F
 import os
+import glob
 
 def compute_entropy(gray_img):
     gray_uint8 = img_as_ubyte(gray_img)
@@ -129,7 +130,11 @@ def classify_nbi_image(image_path, model_name="efficientnetb4"):
     final_coords = nms(candidates, patch_size, iou_thresh)
 
     # Load model
-    model_path = "results/model_20250730_1539.pth"
+    # Find the latest model_*.pth file in the results directory
+    model_files = glob.glob("results/model_*.pth")
+    if not model_files:
+        raise FileNotFoundError("No model checkpoint found in results/")
+    model_path = max(model_files, key=os.path.getmtime)
     model = get_model(model_name, num_classes=5)
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval().to(device)
