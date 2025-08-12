@@ -1,0 +1,101 @@
+[
+  {
+    "name": "P0001",
+    "records": [
+      {
+        "date": "19/06/2025",
+        "diagnosis": "AG",
+        "comments": "atrophic lines ; white lines ; in the antral region of the body "
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "AG",
+        "comments": "atrophic lines ; white lines ; in the antral region of the body "
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal mucosal aspect ; incisura angularis (unghi gastric)"
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal mucosal aspect ; gastric body "
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal mucosal aspect ; gastric body "
+      }
+    ]
+  },
+  {
+    "name": "P0002",
+    "records": [
+      {
+        "date": "19/06/2025",
+        "diagnosis": "IM",
+        "comments": "region of incisura gastris with intestinal metaplasia aspect of the mucosa"
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "antral region with normal aspect of the mucosa"
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "IM",
+        "comments": "intestinal metaplasia at the region of incisura gastris (unghi gastric)"
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal aspect of the gastric body and fundus"
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal aspect of the gastric body and fundus"
+      }
+    ]
+  },
+  {
+    "name": "P0003",
+    "records": []
+  },
+  {
+    "name": "victor hugo",
+    "records": [
+      {
+        "date": "19/06/2025",
+        "diagnosis": "AG",
+        "comments": "atrophic lines ; white lines ; in the antral region of the body "
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "AG",
+        "comments": "atrophic lines ; white lines ; in the antral region of the body "
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal mucosal aspect ; incisura angularis (unghi gastric)"
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal mucosal aspect ; gastric body "
+      },
+      {
+        "date": "19/06/2025",
+        "diagnosis": "Normal",
+        "comments": "normal mucosal aspect ; gastric body "
+      },
+      {
+        "date": "07/08/2025",
+        "diagnosis": "Cancer",
+        "comments": "sscsd"
+      }
+    ]
+  }
+]

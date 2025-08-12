@@ -1,6 +1,5 @@
 # Ignore le dossier VS Code
 .vscode/
-*.zip
 
 # Ignore les fichiers de cache Python
 __pycache__/
@@ -21,10 +20,11 @@ data/
 checkpoints/
 
 results/
+!results/model_20250730_1539.pth
+
 uploads/
 *.pdf
 
-patient_data/
 
 # Node / React frontend
 node_modules/
