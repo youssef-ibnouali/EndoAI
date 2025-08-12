@@ -139,18 +139,9 @@ To follow the same development and experimentation process used in this project,
 
 ### 1️⃣ Prepare Your Data
 
-- **Run `extract_patchs.py`**:  
-  Select your endoscopic image (via GUI), and the system will automatically extract high-entropy and non-blurry patches.
-- **Manually classify patches**:  
-  Move the extracted patch images into folders inside `train_cnn/data/raw/` using medical knowledge (e.g., AG, IM, Normal...).
-- **Run `data_process.py`**:  
-  This will split your data into `train/val/test`, apply augmentation (elastic deformation + flips/rotations), and prepare it for training.
+For detailed instructions on preparing your data, please refer to the documentation here:  
+[Data Preparation Guide](https://uncloud.univ-nantes.fr/index.php/s/jkoNWpPajnCcpG3)
 
-```bash
-python train_cnn/extract_patchs.py
-# → manually organize patches into folders by class
-python train_cnn/data_process.py
-```
 
 ---
 

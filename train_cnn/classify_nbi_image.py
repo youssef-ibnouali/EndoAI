@@ -29,6 +29,7 @@ Dependencies:
 """
 
 
+from glob import glob
 import cv2
 import numpy as np
 import torch
@@ -130,6 +131,10 @@ def classify_nbi_image(image_path, model_name="efficientnetb4"):
     final_coords = nms(candidates, patch_size, iou_thresh)
 
     # Load model
+    model_files = glob.glob("results/model_*.pth")
+    if not model_files:
+        raise FileNotFoundError("No model checkpoint found in results/")
+    model_path = max(model_files, key=os.path.getmtime)
     # Find the latest model_*.pth file in the results directory
     model_files = glob.glob("results/model_*.pth")
     if not model_files:
