@@ -29,7 +29,7 @@ Dependencies:
 """
 
 
-from glob import glob
+import glob
 import cv2
 import numpy as np
 import torch
